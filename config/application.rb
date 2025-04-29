@@ -23,5 +23,8 @@ module Evernot
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Configure error pages
+    config.exceptions_app = routes
   end
 end

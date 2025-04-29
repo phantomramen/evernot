@@ -1,0 +1,7 @@
+<%= turbo_stream.update "notes_panel" do %>
+  <%= render "shared/notes_panel", notes: [], current: nil %>
+<% end %>
+
+<%= turbo_stream.update "modal" do %>
+  <turbo-frame id="modal"></turbo-frame>
+<% end %>

@@ -1,0 +1,3 @@
+<%= turbo_stream.update "notes_panel" do %>
+  <%= render "shared/notes_panel", notes: @notes_for_panel, current: nil, notebook: @notebook %>
+<% end %> 

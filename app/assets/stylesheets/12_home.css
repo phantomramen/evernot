@@ -1,0 +1,72 @@
+
+.generic-page-wrapper {
+  padding: 48px;
+}
+
+.welcome-message {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.recent-notes {
+  max-width: 800px;
+  overflow-y: auto;
+}
+
+.recent-notes__title {
+  font-size: var(--text-2xl);
+  margin-bottom: 16px;
+}
+
+.recent-notes__list {
+  display: flex;
+  gap: 12px;
+  max-width: 800px;
+  overflow-y: auto;
+}
+
+.recent-note {
+  display: block;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 160px;
+  height: 280px;
+  background: var(--color-white);
+  border: solid 1px var(--color-border);
+  border-radius: var(--rounded);
+  padding: 16px;
+  box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.02);
+
+  &:hover {
+    background: var(--color-background);
+  }
+}
+
+.recent-note__title {
+  font-size:  var(--text-sm);
+  font-weight: 600;
+  margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recent-note__preview {
+  font-size:  var(--text-sm);
+  line-height: var(--line-height-body);
+  color: var(--color-text-secondary);
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 9;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 8px;
+}
+
+.recent-note__timestamp {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}
