@@ -1,0 +1,87 @@
+<aside class="sidebar" data-controller="sidebar">
+
+
+
+  <div data-controller="dropdown" class="dropdown" data-position="bottom-right">
+    <article class="user-info" data-action="click->dropdown#toggle">
+
+      <%= image_tag "avatar.jpg", alt: "Profile picture of #{current_user.name}", class: "user-info__image" %>
+      <div>
+        <p class="user-info__name"><%= current_user.name %></p>
+        <p class="user-info__email"><%= current_user.email_address %></p>
+      </div>
+  
+    </article>
+    
+    <div data-dropdown-target="menu" class="dropdown__menu">
+      <div role="menu" aria-orientation="vertical">
+        <%= button_to "Sign out", session_path, method: :delete, class: "dropdown__menu-item", role: "menuitem" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar__actions">
+  <%= link_to new_note_path(notebook_id: @notebook&.id), class: "button button--full-width" do %>
+    <div class="button__content">
+      <%= render "shared/icon", name: "new_note", size: 16, color: "#F9FAFB" %>
+      <span>New Note</span>
+    </div>
+  <% end %>
+  </div>
+
+
+  <nav class="sidebar-nav">
+      <ul class="nav-list">
+        <li class="nav-list__item">
+          <%= link_to root_path, class: "nav-list__link #{current_page?(root_path) ? 'active' : ''}" do %>
+            <div class="nav-list__link-icon">
+              <%= render "shared/icon", name: "home", size: 16, color: "#667085" %>
+            </div>
+            <span>Home</span>
+          <% end %>
+
+        </li>
+        <li>
+          <%= link_to notes_path, 
+              data: { turbo: false }, 
+              class: "nav-list__link #{params[:controller] == 'notes' && !params[:notebook_id] ? 'active' : ''}" do %>
+            <%= render "shared/icon", name: "notes", size: 16, color: "#667085" %>
+            <span>Notes</span>
+          <% end %>
+
+        </li>
+        <li>
+          <div class="nav-list__link nav-list__link--collapsible" data-action="click->sidebar#toggleNotebooks" data-sidebar-target="notebooksListTrigger">
+            <div class="nav-list__link-icon">
+              <%= render "shared/icon", name: "notebook", size: 16, color: "#667085" %>
+            </div>
+            <span>Notebooks</span>
+            <%= render "shared/icon", name: "chevron", size: 14, color: "#667085", class: "nav-list__chevron" %>
+          </div>
+          <div class="nav-list__nested" data-sidebar-target="notebooksList">
+            <ul id="notebooks">
+              <% (@notebooks || []).each do |nb| %>
+                <% next unless nb.id %>  <!-- skip any with no ID -->
+                <%= render "notebooks/notebook", notebook: nb, class: "nav-list__link nav-list__link--nested #{'active' if nb == @notebook}" %>
+              <% end %>
+            </ul>
+            <ul>
+              <li data-controller="modal">
+                <button
+                  type="button"
+                  class="nav-list__link nav-list__link--nested text-action"
+                  data-action="click->modal#open"
+                  data-turbo-frame="modal"
+                  data-url="<%= new_notebook_path %>">
+                  <%= render "shared/icon", name: "new_notebook", size: 16, color: "#4086FF" %>
+                  <span>New Notebook</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+      <turbo-frame id="modal"></turbo-frame>
+    </nav>
+
+</aside>

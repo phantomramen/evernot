@@ -1,0 +1,26 @@
+.text-field__label {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  padding-bottom: 12px;
+}
+
+.text-field__input {
+  border: solid 1px var(--color-input-border);
+  border-radius: var(--rounded);
+  padding: 8px 14px;
+  font-size: var(--text-sm);
+  line-height: var(--line-height-body);
+  width: 100%;
+}
+
+.text-field__validation {
+  font-size: var(--text-sm);
+  line-height: 20px;
+  margin-top: 8px;
+}
+
+.text-field__validation--error {
+  color: var(--color-error);
+}

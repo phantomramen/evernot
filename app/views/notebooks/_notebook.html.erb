@@ -1,0 +1,19 @@
+<div class="nav-list__item" id="<%= dom_id(notebook) %>">
+  <% first_note = notebook.notes.order(updated_at: :desc).first %>
+  <%= link_to first_note ? edit_note_path(first_note, notebook_id: notebook.id) : notes_path(notebook_id: notebook.id),
+              class: "nav-list__link nav-list__link--nested #{'active' if notebook == @notebook}",
+              data: { turbo_frame: "_top" } do %>
+    <% if notebook == current_user.default_notebook %>
+      <div class="nav-list__link-icon">
+        <%= render "shared/icon", name: "default_notebook", size: 16, color: "#667085" %>
+      </div>
+    <% else %>
+      <div class="nav-list__link-icon">
+        <%= render "shared/icon", name: "notebook", size: 15, color: "#667085" %>
+      </div>
+    <% end %>
+    <span>
+      <%= notebook.name %>
+    </span>
+  <% end %>
+</div>

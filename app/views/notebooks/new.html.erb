@@ -1,0 +1,26 @@
+<turbo-frame id="modal">
+  <div class="modal-backdrop" data-action="click->modal#close">
+    <div class="modal-content" data-action="click->modal#stop">
+      <h3>New Notebook</h3>
+
+      <%= form_with model: @notebook, url: notebooks_path,
+                     data: { turbo_frame: "modal" } do |f| %>
+        <div>
+          <%= f.label :name %><br>
+          <%= f.text_field :name, autofocus: true %>
+          <% if @notebook.errors[:name].any? %>
+            <div class="field-error">
+              <%= @notebook.errors.full_messages_for(:name).join(", ") %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="mt-4">
+          <%= f.submit "Create", class: "button" %>
+          <%= link_to "Cancel", "#", class: "button--ghost",
+                      data: { action: "modal#close" } %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</turbo-frame>

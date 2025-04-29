@@ -1,0 +1,32 @@
+<turbo-frame id="modal">
+  <div class="modal-backdrop" data-action="click->modal#close">
+    <div class="modal-content" data-action="click->modal#stop">
+      <h3 class="modal-content__title">Create new notebook</h3>
+      <p class="modal-content__text">Notebooks are useful for grouping notes around a common topic. They can be private or shared.</p>
+      <%= form_with model: notebook,
+        url: notebooks_path,
+        data: {
+          turbo: true,
+          controller: "modal",
+          action: "turbo:submit-end->modal#close"
+        },
+        local: false do |f| %>
+
+        <div class="modal-form">
+          <div class="text-field">
+            <%= f.label :name, class: "text-field__label" %>
+            <%= f.text_field :name, autofocus: true, class: "text-field__input" %>
+          </div>
+          <% if notebook.errors[:name].any? %>
+            <div class="text-field__validation text-field__validation--error"><%= notebook.errors.full_messages_for(:name).join(", ") %></div>
+          <% end %>
+        </div>
+
+        <div class="modal-actions">
+          <%= link_to "Cancel", "#", class: "button button--secondary", data: { action: "modal#close" } %>
+          <%= f.submit "Create", class: "button" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</turbo-frame>

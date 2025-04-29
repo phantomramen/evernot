@@ -1,6 +1,9 @@
 class SessionsController < ApplicationController
   allow_unauthenticated_access only: %i[ new create ]
   rate_limit to: 10, within: 3.minutes, only: :create, with: -> { redirect_to new_session_url, alert: "Try again later." }
+  
+  before_action :force_sign_out, only: [:new]
+  before_action :set_cache_headers, only: [:new]
 
   def new
   end
@@ -16,6 +19,22 @@ class SessionsController < ApplicationController
 
   def destroy
     terminate_session
+    flash.clear
     redirect_to new_session_path
+  end
+
+  private
+
+  def force_sign_out
+    if authenticated?
+      terminate_session
+      flash.clear
+    end
+  end
+
+  def set_cache_headers
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
   end
 end

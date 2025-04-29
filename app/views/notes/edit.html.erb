@@ -1,0 +1,66 @@
+<% content_for :notes_panel do %>
+  <%= render "shared/notes_panel",
+    notes: @notebook ? @notebook.notes.order(created_at: :desc) : current_user.notes.order(created_at: :desc),
+    current: @note,
+    notebook: @notebook %>
+<% end %>
+
+<div class="edit-note-panel" data-controller="autosave" data-autosave-save-interval-value="3000">
+  <div class="edit-note-panel-header">
+    <div class="breadcrumbs">
+      <% if @note.notebook %>
+        <%= link_to notebook_path(@note.notebook), class: "breadcrumbs__item" do %>
+          <%= render "shared/icon", name: "notebook", size: 15, color: "#9C9C9C" %>
+          <span class="breadcrumbs__text"><%= @note.notebook.name %></span>
+        <% end %>
+        <%= render "shared/icon", name: "chevron", size: 10, color: "#9C9C9C" %>
+      <% end %>
+      <span class="breadcrumbs__item"><span class="breadcrumbs__text"><%= @note.title.presence || "Untitled" %></span></span>
+    </div>
+    <div class="edit-note-panel-header__meta">
+      <div class="save-status" data-autosave-target="status">All changes saved</div>
+        <div class="dropdown" data-controller="dropdown">
+          <button class="icon-button" type="button" data-action="click->dropdown#toggle">
+            <%= render "shared/icon", name: "ellipsis_vertical", size: 16, color: "#667085" %>
+          </button>
+          <div class="dropdown__menu" data-dropdown-target="menu" data-position="bottom-right">
+            <%= button_to "Delete Note", 
+                note_path(@note, notebook_id: @notebook&.id),
+                method: :delete,
+                class: "dropdown__menu-item",
+                data: {
+                  turbo: false
+                } %>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <%= form_with model: @note,
+                url: note_path(@note, notebook_id: @note.notebook&.id),
+                local: false,
+                data: { autosave_target: "form" } do |form| %>
+    <div class="note-actions">
+      <trix-toolbar id="trix-toolbar-1"></trix-toolbar>
+    </div>
+    <div class="edit-note">
+      <div>
+        <%= form.text_field :title, 
+          autofocus: true, 
+          class: "note-form__title", 
+          placeholder: "Title" %>
+      </div>
+      <div>
+        <%= form.rich_text_area :content,
+          class: "note-form__textarea",
+          toolbar: "trix-toolbar-1",
+          placeholder: "Start writing",
+          data: {
+            controller: "trix",
+            trix_target: "editor",
+            autosave_target: "editor"
+          } %>
+      </div>
+    </div>
+  <% end %>
+</div>

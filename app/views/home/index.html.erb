@@ -1,0 +1,28 @@
+<div class="generic-page-wrapper">
+  <h1 class="welcome-message">Welcome back, <%= current_user.name %>!</h1>
+
+  <%
+=begin%>
+ <%= link_to "New Note", new_note_path, class: "button" %> 
+<%
+=end%>
+
+  <div class="recent-notes">
+    <h2 class="recent-notes__title">Recent Notes</h2>
+  
+    <ul class="recent-notes__list">
+      <% @recent_notes.each do |note| %>
+        <li>
+          <%= link_to edit_note_path(note), class: "recent-note" do %>
+            <div>
+              <div class="recent-note__title"><%= note.title %></div>
+              <div class="recent-note__preview"><%= sanitize note.content.to_plain_text.truncate(250), tags: [] %></div>
+            </div>
+            <div class="recent-note__timestamp"><%= time_ago_in_words(note.updated_at) %> ago</div>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+</div>

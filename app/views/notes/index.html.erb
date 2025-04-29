@@ -1,0 +1,7 @@
+<% content_for :notes_panel do %>
+  <%= render "shared/notes_panel", notes: @notes, current: @current_note, notebook: @notebook %>
+<% end %>
+
+<% if @notes.any? %>
+  <%= render "shared/editor" %>
+<% end %>

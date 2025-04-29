@@ -17,12 +17,37 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <%= yield %>
+    <div class="main-layout">
+      <% if authenticated? && !(params[:controller] == 'sessions' && params[:action] == 'new') %>
+        <%= render "shared/sidebar" %>
+      <% end %>
+      <% if params[:controller] == 'notes' || (params[:controller] == 'notebooks' && params[:action] == 'show') %>
+        <turbo-frame id="notes_panel" 
+                     class="notes-panel" 
+                     data-controller="notes-panel"
+                     data-notes-panel-target="panel">
+          <% if content_for?(:notes_panel) %>
+            <%= yield :notes_panel %>
+          <% else %>
+            <% if params[:controller] == 'notes' && params[:action] == 'index' %>
+              <%= render "shared/notes_panel", 
+                        notes: current_user.notes.order(created_at: :desc), 
+                        current: nil, 
+                        notebook: nil %>
+            <% else %>
+              <%= render "shared/notes_panel", notes: [], current: nil, notebook: nil %>
+            <% end %>
+          <% end %>
+        </turbo-frame>
+      <% end %>
+      <main class="main-content">
+        <%= yield %>
+      </main>
+    </div>
   </body>
 </html>
