@@ -81,7 +81,11 @@ test:
 production:
   primary: &primary_production
     <<: *default
-    url: <%= ENV['DATABASE_URL'] %>
+    host:     <%= Rails.application.credentials.postgres[:host] %>
+    port:     <%= Rails.application.credentials.postgres[:port] %>
+    database: <%= Rails.application.credentials.postgres[:database] %>
+    username: <%= Rails.application.credentials.postgres[:username] %>
+    password: <%= Rails.application.credentials.postgres[:password] %>
   cache:
     <<: *primary_production
     database: evernot_production_cache
