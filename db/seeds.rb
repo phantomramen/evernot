@@ -9,7 +9,7 @@
 #   end
 
 User.create!(
-  email_address: ENV['SEED_USER_EMAIL'],
-  password: ENV['SEED_USER_PASSWORD'],
-  name: ENV['SEED_USER_NAME']
+  email_address: ENV['SEED_USER_EMAIL'] || "danny@hey.com",
+  password: ENV['SEED_USER_PASSWORD'] || "password123",
+  name: ENV['SEED_USER_NAME'] || "phantomramen"
 )
